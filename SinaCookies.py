@@ -1,6 +1,8 @@
 import requests
 import re
 import random
+
+
 def get_cookies():
     try:
         # Redirect
@@ -16,9 +18,9 @@ def get_cookies():
                    'fp': {"os": "1", "browser": "Gecko65,0,0,0", "fonts": "undefined", "screenInfo": "1920*1080*24",
                           "plugins": ""}}
         r = requests.post(GenURL, data=Payload, cookies=dict(login=LoginCookie))
+        tid = re.search(r'(?<="tid":").*?(?=")', r.text).group(0)
         # Login Again
         LoginURL = "https://passport.weibo.com/visitor/visitor?"
-        tid = re.search(r'(?<="tid":").*?(?=")', r.text).group(0)
         Payload = {'a': 'incarnate', 't': tid, 'w': '3', 'c': '100', 'gc': '',
                    'cb': 'cross_domain', 'from': 'weibo', '_rand': str(random.uniform(0, 1))+str(random.uniform(999, 10000))}
         r = requests.get(LoginURL, params=Payload, cookies=dict(login=LoginCookie, tid=tid+"__100"))
